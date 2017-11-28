@@ -57,6 +57,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ACommand.cs" />
+    <Compile Include="Commands\Classes\About.cs" />
+    <Compile Include="Commands\Classes\Begin.cs" />
+    <Compile Include="Commands\Classes\CommandBoard.cs" />
+    <Compile Include="Commands\Classes\End.cs" />
+    <Compile Include="Commands\Classes\Info.cs" />
+    <Compile Include="Commands\Classes\Start.cs" />
+    <Compile Include="Commands\Classes\Turn.cs" />
+    <Compile Include="Commands\DataCommand.cs" />
+    <Compile Include="Commands\ECommand.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="IAI.cs" />
     <Compile Include="IterativeDeepening.cs" />
