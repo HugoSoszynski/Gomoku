@@ -1,4 +1,7 @@
 .vs/
 bin/
 obj/
+*.exe
+CMakeFiles
+CMakeCache.txt
 .idea/
