@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
+    <Compile Include="IAI.cs" />
     <Compile Include="IterativeDeepening.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Program.cs" />

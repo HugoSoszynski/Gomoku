@@ -26,12 +26,6 @@ namespace Gomoku
         Opponent
     }
 
-    public struct BoardInit {
-        public uint X;
-        public uint Y;
-        public State State;
-    }
-
     public class Board {
 
         public uint Size { get; private set; }
@@ -40,16 +34,21 @@ namespace Gomoku
         public Board(uint size) {
             Size = size;
             Map = new State[size, size];
-            for (var x = 0; x < size; ++x) {
-                for (var y = 0; y < size; ++y) {
-                    Map[x, y] = State.Empty;
-                }
+            this.Zero();
+        }
+
+        public void Init(List<Tuple<uint, uint, State>> init) {
+            this.Zero();
+            foreach (var i in init) {
+                Map[i.Item1, i.Item2] = i.Item3;
             }
         }
 
-        public void BoardInit(List<BoardInit> init) {
-            foreach (var i in init) {
-                Map[i.X, i.Y] = i.State;
+        private void Zero() {
+            for (var x = 0; x < Size; ++x) {
+                for (var y = 0; y < Size; ++y) {
+                    Map[x, y] = State.Empty;
+                }
             }
         }
 
@@ -59,6 +58,12 @@ namespace Gomoku
             if (Map[x, y] != State.Empty)
                 throw new IllegalMoveException("[" + x + "," + y + "]: Not Empty");
             Map[x, y] = state;
+        }
+
+        public void Unplay(uint x, uint y) {
+            if (x >= Size || y >= Size || x < 0 || y < 0)
+                throw new IllegalMoveException("[" + x + "," + y + "]: Out of the board");
+            Map[x, y] = State.Empty;
         }
     }
 }
