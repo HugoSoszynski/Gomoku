@@ -8,5 +8,13 @@ namespace Gomoku {
     public class Serializer {
 
         public Serializer() {}
+
+        public void Read() {
+
+        }
+
+        public void Send() {
+
+        }
     }
 }

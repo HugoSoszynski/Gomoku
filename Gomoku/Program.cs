@@ -10,6 +10,13 @@ namespace Gomoku
     {
         static void Main(string[] args)
         {
+            Core core = new Core();
+
+            try {
+                core.Start();
+            } catch (Exception e) {
+                Console.Out.WriteLine(e.Message);
+            }
         }
     }
 }

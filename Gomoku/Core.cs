@@ -14,6 +14,10 @@ namespace Gomoku {
         }
 
         public void Read() {
+            _serializer.Read();
+        }
+
+        public void Start() {
             Read();
         }
     }
