@@ -31,6 +31,8 @@ namespace Gomoku.Commands
 
         private static bool Compare(string input, ECommand type)
         {
+            if (input == null)
+                return false;
             switch (type)
             {
                 case ECommand.START:
@@ -41,7 +43,7 @@ namespace Gomoku.Commands
                 case ECommand.END:
                 case ECommand.BEGIN:
                 case ECommand.ABOUT:
-                    return input.StartsWith(type + "\r\n");
+                    return input.Equals(type.ToString());
                 default:
                     return false;
             }
