@@ -17,9 +17,9 @@ namespace Gomoku.Commands
         TURN
     }
     
-    public static class CommandDictionary
+    public static class CommandList
     {
-        public static readonly List<ACommand> CommandMap = new List<ACommand>();
+        public static readonly List<ACommand> ListOfCommand = new List<ACommand>();
         
         private static readonly ACommand About = new About();
         private static readonly ACommand Begin = new Begin();
@@ -48,6 +48,6 @@ namespace Gomoku.Commands
         }
         
         public static DataCommand From(string input)
-        { return (from command in CommandMap where Compare(input, command.Type) select command.CreateDataCommand(input)).FirstOrDefault(); }
+        { return (from command in ListOfCommand where Compare(input, command.Type) select command.CreateDataCommand(input)).FirstOrDefault(); }
     }
 }

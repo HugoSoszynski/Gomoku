@@ -15,7 +15,7 @@ namespace Gomoku
         {
             while (true)
             {
-                var tmp = CommandDictionary.From(Console.ReadLine());
+                var tmp = CommandList.From(Console.ReadLine());
                 if (tmp.CommandType == ECommand.UNKNOWN)
                     Console.Out.WriteLine("UNKNOWN");
                 else

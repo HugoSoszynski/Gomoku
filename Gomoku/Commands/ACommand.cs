@@ -7,7 +7,7 @@
         protected ACommand(ECommand type)
         {
             Type = type;
-            CommandDictionary.CommandMap.Add(this);
+            CommandList.ListOfCommand.Add(this);
         }
 
         public abstract string CreateOutput(DataCommand output);
