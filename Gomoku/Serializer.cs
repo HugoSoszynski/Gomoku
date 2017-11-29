@@ -13,13 +13,18 @@ namespace Gomoku
 
         public DataCommand Read()
         {
-            while (true)
+            for (;;)
             {
                 var tmp = CommandList.From(Console.ReadLine());
-                if (tmp.CommandType == ECommand.UNKNOWN)
-                    Console.Out.WriteLine("UNKNOWN");
-                else
-                    return tmp;
+                switch (tmp.CommandType)
+                {
+                    case ECommand.UNKNOWN:
+                    case ECommand.ERROR:
+                        Console.Out.WriteLine(tmp.CommandType.ToString());
+                        break;
+                    default:
+                        return tmp;
+                }
             }
         }
 

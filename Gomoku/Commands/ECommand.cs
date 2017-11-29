@@ -14,7 +14,8 @@ namespace Gomoku.Commands
         END,
         INFO,
         START,
-        TURN
+        TURN,
+        ERROR
     }
     
     public static class CommandList
@@ -40,6 +41,7 @@ namespace Gomoku.Commands
                 case ECommand.INFO:
                     return input.StartsWith(type + " ");
                 case ECommand.BOARD:
+                    return input.StartsWith(type + " ");
                 case ECommand.END:
                 case ECommand.BEGIN:
                 case ECommand.ABOUT:
