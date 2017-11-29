@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Gomoku {
-    public class Random
+    public class RandomAI
         : IAI {
         public Tuple<uint, uint> MakeMove(Board board) {
-            return board.PossibleMoves().First();
+            Random r = new Random();
+            var moves = board.PossibleMoves();
+            var move = moves[r.Next(moves.Count())];
+            return move;
         }
     }
 }
