@@ -41,7 +41,7 @@ namespace Gomoku.Commands
                 case ECommand.INFO:
                     return input.StartsWith(type + " ");
                 case ECommand.BOARD:
-                    return input.StartsWith(type + " ");
+                    return input.StartsWith(type.ToString());
                 case ECommand.END:
                 case ECommand.BEGIN:
                 case ECommand.ABOUT:
