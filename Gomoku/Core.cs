@@ -45,7 +45,13 @@ namespace Gomoku {
         public static void Turn(Object _object) {
             Tuple<uint, uint> tuple;
 
-            _board.Play(((Tuple<uint, uint>)(_object)).Item1, ((Tuple<uint, uint>)(_object)).Item2, State.Opponent);
+            try {
+                _board.Play(((Tuple<uint, uint>)(_object)).Item1, ((Tuple<uint, uint>)(_object)).Item2, State.Opponent);
+            }
+            catch (IllegalMoveException e) {
+                _serializer.Send("ERROR " + e.Message);
+                return;
+            }
             tuple = _ia.MakeMove(_board);
             _board.Play(tuple.Item1, tuple.Item2, State.Myself);
             _serializer.Send(tuple.Item1 + "," + tuple.Item2);
