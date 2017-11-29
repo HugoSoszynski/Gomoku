@@ -70,7 +70,7 @@ namespace Gomoku
             List<Tuple<uint, uint>> moves = new List<Tuple<uint, uint>>();
 
             for (uint x = 0; x < Size; ++x) {
-                for (uint y = 0; y < Size; ++x) {
+                for (uint y = 0; y < Size; ++y) {
                     if (Map[x, y] == State.Empty)
                         moves.Add(new Tuple<uint, uint>(x, y));
                 }

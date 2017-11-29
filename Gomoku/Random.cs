@@ -10,7 +10,7 @@ namespace Gomoku {
         public Tuple<uint, uint> MakeMove(Board board) {
             Random r = new Random();
             var moves = board.PossibleMoves();
-            var move = moves[r.Next(moves.Count())];
+            var move = moves.ElementAt(r.Next(moves.Count() - 1));
             return move;
         }
     }
