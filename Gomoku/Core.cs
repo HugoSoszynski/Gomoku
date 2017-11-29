@@ -19,7 +19,7 @@ namespace Gomoku {
             { Commands.ECommand.BOARD, Board },
             { Commands.ECommand.INFO, Info },
             { Commands.ECommand.END, End },
-            { Commands.ECommand.ABOUT, About },
+            { Commands.ECommand.ABOUT, About }
         };
 
 
@@ -47,7 +47,7 @@ namespace Gomoku {
             _board.Play(((Tuple<uint, uint>)(_object)).Item1, ((Tuple<uint, uint>)(_object)).Item2, State.Opponent);
             tuple = _ia.MakeMove(_board);
             _board.Play(tuple.Item1, tuple.Item2, State.Myself);
-            //_serializer.Send(tuple.Item1 + "," + "tuple.Item2");
+            _serializer.Send(tuple.Item1 + "," + tuple.Item2);
             Read();
         }
 
@@ -56,7 +56,7 @@ namespace Gomoku {
 
             tuple = _ia.MakeMove(_board);
             _board.Play(tuple.Item1, tuple.Item2, State.Myself);
-            //_serializer.Send(tuple.Item1 + "," + "tuple.Item2");
+            _serializer.Send(tuple.Item1 + "," + tuple.Item2);
             Read();
         }
 
@@ -66,7 +66,7 @@ namespace Gomoku {
             _board.Init((List<Tuple <uint, uint, State>>)(_object));
             tuple = _ia.MakeMove(_board);
             _board.Play(tuple.Item1, tuple.Item2, State.Myself);
-            //_serializer.Send(tuple.Item1 + "," + "tuple.Item2");
+            _serializer.Send(tuple.Item1 + "," + tuple.Item2);
             Read();
         }
 
@@ -79,7 +79,7 @@ namespace Gomoku {
         }
         
         public static void About(Object _object) {
-            //_serializer.Send("name=\"SaltTeam\", version\"1.0\", author=\"SaltTeam\", country=\"France\"");
+            _serializer.Send("name=\"SaltTeam\", version\"1.0\", author=\"SaltTeam\", country=\"France\"");
         }
     }
 }

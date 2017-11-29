@@ -5,10 +5,5 @@
         public CommandBoard()
             :base(ECommand.BOARD)
         {}
-
-        public override string CreateOutput(DataCommand output)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
