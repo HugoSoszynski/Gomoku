@@ -14,13 +14,12 @@ namespace Gomoku.Commands.Classes
         {
             Regex mRegex = new Regex("(BOARD|\\d{1,2},\\d{1,2},[0-2]|DONE)");
             MatchCollection matches = mRegex.Matches(input);
-            if (matches.Count > 0 &&
+            if (matches.Count > 1 &&
                 matches[matches.Count - 1].Value.Equals("DONE") &&
                 matches[0].Value.Equals("BOARD"))
             {
                 var list = new List<Tuple<uint, uint, State>>();
                 for (int i = 1; i < matches.Count - 1; i++)
-                {
                     try
                     {
                         var nbrSplit = matches[i].Value.Split(',');
@@ -30,8 +29,6 @@ namespace Gomoku.Commands.Classes
                     {
                         return new DataCommand {CommandType = ECommand.ERROR, Data = null};
                     }
-                    Console.Out.WriteLine(matches[i].Value);
-                }
                 return new DataCommand {CommandType = Type, Data = list};
             }
             return new DataCommand {CommandType = ECommand.ERROR, Data = null};
