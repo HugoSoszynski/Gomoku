@@ -10,7 +10,6 @@
             CommandList.ListOfCommand.Add(this);
         }
 
-        public abstract string CreateOutput(DataCommand output);
         public virtual DataCommand CreateDataCommand(string input)
         { return new DataCommand() {CommandType = Type, Data = null}; }
     }

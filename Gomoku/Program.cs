@@ -13,7 +13,7 @@ namespace Gomoku
             Core core = new Core();
 
             try {
-                core.Start();
+                core.Execute();
             } catch (Exception e) {
                 Console.Out.WriteLine(e.Message);
             }

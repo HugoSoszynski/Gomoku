@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Gomoku {
-    interface IAI {
+    public interface IAI {
         Tuple<uint, uint> MakeMove(Board board);
     }
 }

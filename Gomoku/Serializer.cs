@@ -23,9 +23,9 @@ namespace Gomoku
             }
         }
 
-        public void Send()
+        public void Send(string output)
         {
-
+            Console.Out.WriteLine(output);
         }
     }
 }
