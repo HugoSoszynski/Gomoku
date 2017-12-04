@@ -29,7 +29,7 @@ namespace Gomoku
     public class Board {
 
         public uint Size { get; private set; }
-        private State[,] Map = null;
+        public State[,] Map = null;
 
         public Board(uint size) {
             Size = size;
