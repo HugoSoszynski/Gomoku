@@ -37,6 +37,15 @@ namespace Gomoku
             this.Zero();
         }
 
+        public Board(Board other) {
+            this.Size = other.Size;
+            for (var x = 0; x < Size; ++x) {
+                for (var y = 0; y < Size; ++y) {
+                    this.Map[x, y] = other.Map[x, y];
+                }
+            }
+        }
+
         public void Init(List<Tuple<uint, uint, State>> init) {
             this.Zero();
             foreach (var i in init) {
