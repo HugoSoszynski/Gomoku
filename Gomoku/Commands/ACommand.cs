@@ -11,6 +11,6 @@
         }
 
         public virtual DataCommand CreateDataCommand(string input)
-        { return new DataCommand() {CommandType = Type, Data = null}; }
+        { return new DataCommand {CommandType = Type, Data = null}; }
     }
 }

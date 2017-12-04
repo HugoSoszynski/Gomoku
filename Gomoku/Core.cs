@@ -7,9 +7,10 @@ using System.Text;
 namespace Gomoku {
     public class Core {
 
-        protected static Serializer _serializer;
+        protected static Serializer _serializer = new Serializer();
         protected static Board _board;
-        protected static IAI _ia;
+        protected static IAI _ia = new RandomAI();
+        protected static bool isRunning = true;
 
         private static readonly IDictionary<Commands.ECommand, Action<Object>> functionMappings = new Dictionary<Commands.ECommand, Action<Object>>
         {
@@ -23,32 +24,37 @@ namespace Gomoku {
         };
 
 
-        public Core() {
-            _serializer = new Serializer();
-        }
+        public Core() {}
 
         public void Execute() {
             Read();
         }
 
         public static void Read() {
-           Commands.DataCommand command = _serializer.Read();
-           functionMappings[command.CommandType](command.Data);
+            while (isRunning) {
+                Commands.DataCommand command = _serializer.Read();
+                functionMappings[command.CommandType](command.Data);
+            }
         }
 
         public static void Start(Object _object) {
             _board = new Board((uint)_object);
-            Read();
+            _serializer.Send("OK");
         }
 
         public static void Turn(Object _object) {
             Tuple<uint, uint> tuple;
 
-            _board.Play(((Tuple<uint, uint>)(_object)).Item1, ((Tuple<uint, uint>)(_object)).Item2, State.Opponent);
+            try {
+                _board.Play(((Tuple<uint, uint>)(_object)).Item1, ((Tuple<uint, uint>)(_object)).Item2, State.Opponent);
+            }
+            catch (IllegalMoveException e) {
+                _serializer.Send("ERROR " + e.Message);
+                return;
+            }
             tuple = _ia.MakeMove(_board);
             _board.Play(tuple.Item1, tuple.Item2, State.Myself);
             _serializer.Send(tuple.Item1 + "," + tuple.Item2);
-            Read();
         }
 
         public static void Begin(Object _object) {
@@ -57,25 +63,22 @@ namespace Gomoku {
             tuple = _ia.MakeMove(_board);
             _board.Play(tuple.Item1, tuple.Item2, State.Myself);
             _serializer.Send(tuple.Item1 + "," + tuple.Item2);
-            Read();
         }
 
         public static void Board(Object _object) {
             Tuple<uint, uint> tuple;
-
+            
             _board.Init((List<Tuple <uint, uint, State>>)(_object));
             tuple = _ia.MakeMove(_board);
             _board.Play(tuple.Item1, tuple.Item2, State.Myself);
             _serializer.Send(tuple.Item1 + "," + tuple.Item2);
-            Read();
         }
 
         public static void Info(Object _object) {
-            Read();
         }
 
         public static void End(Object _object) {
-            //nothing to do for now
+            isRunning = false;
         }
         
         public static void About(Object _object) {
