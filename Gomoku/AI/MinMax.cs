@@ -50,11 +50,10 @@ namespace Gomoku {
                 ++eoff;
             Offset = off;
             Map = new Board(eoff - off + 1);
-            for (var x = off; x <= eoff; ++x) {
-                for (var y = off; y <= eoff; ++y) {
-                    Map.Map[x - off, y - off] = board.Map[x, y];
-                }
-            }
+
+            for (int i = 0; i < Map.Size; i++)
+                for (int j = 0; j < Map.Size; j++)
+                    Map.Map[i, j] = board.Map[Offset + i, Offset + j];
         }
 
         private bool CheckBorderUp(Board board, uint offset) {
