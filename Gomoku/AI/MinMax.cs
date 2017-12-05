@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Gomoku.AI {
+namespace Gomoku {
     public class MinMax
         : IAI {
         private Board Map = null;
@@ -54,8 +54,13 @@ namespace Gomoku.AI {
         private double MinimiseMove(uint depth, double alpha, double beta, Tuple<uint, uint> madeMove) {
             double res;
 
+            Evaluator eval = new Evaluator();
+            res = eval.Evaluate(Map);
+            if (depth == 0 || res == double.MaxValue || res == double.MinValue) {
+                return res;
+            }
+
             res = double.MaxValue;
-            // Check for the winner before and return if winner found
             var moves = Map.PossibleMoves();
             foreach (var move in moves) {
                 Map.Play(move.Item1, move.Item2, State.Opponent);
@@ -72,8 +77,13 @@ namespace Gomoku.AI {
         private double MaximiseMove(uint depth, double alpha, double beta, Tuple<uint, uint> madeMove) {
             double res;
 
+            Evaluator eval = new Evaluator();
+            res = eval.Evaluate(Map);
+            if (depth == 0 || res == double.MaxValue || res == double.MinValue) {
+                return res;
+            }
+
             res = double.MinValue;
-            // Check for the winner before and return if winner found
             var moves = Map.PossibleMoves();
             foreach (var move in moves) {
                 Map.Play(move.Item1, move.Item2, State.Myself);

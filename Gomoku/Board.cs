@@ -39,6 +39,7 @@ namespace Gomoku
 
         public Board(Board other) {
             this.Size = other.Size;
+            this.Map = new State[Size, Size];
             for (var x = 0; x < Size; ++x) {
                 for (var y = 0; y < Size; ++y) {
                     this.Map[x, y] = other.Map[x, y];

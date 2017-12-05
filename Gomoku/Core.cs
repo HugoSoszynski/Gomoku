@@ -9,7 +9,7 @@ namespace Gomoku {
 
         protected static Serializer _serializer = new Serializer();
         protected static Board _board;
-        protected static IAI _ia = new RandomAI();
+        protected static IAI _ia = new MinMax();
         protected static bool isRunning = true;
 
         private static readonly IDictionary<Commands.ECommand, Action<Object>> functionMappings = new Dictionary<Commands.ECommand, Action<Object>>

@@ -15,7 +15,8 @@ namespace Gomoku
             try {
                 core.Execute();
             } catch (Exception e) {
-                Console.Out.WriteLine(e.Message);
+                Console.Out.WriteLine(e);
+                Console.ReadLine();
             }
         }
     }
