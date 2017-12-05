@@ -4,3 +4,4 @@ obj/
 *.exe
 CMakeFiles
 CMakeCache.txt
+.idea/

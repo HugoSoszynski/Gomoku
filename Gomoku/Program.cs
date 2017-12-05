@@ -10,8 +10,14 @@ namespace Gomoku
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World;");
-            Console.ReadLine();
+            Core core = new Core();
+
+            try {
+                core.Execute();
+            } catch (Exception e) {
+                Console.Out.WriteLine(e);
+                Console.ReadLine();
+            }
         }
     }
 }

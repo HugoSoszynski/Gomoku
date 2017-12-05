@@ -57,8 +57,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\MinMax.cs" />
+    <Compile Include="Commands\ACommand.cs" />
+    <Compile Include="Commands\Classes\About.cs" />
+    <Compile Include="Commands\Classes\Begin.cs" />
+    <Compile Include="Commands\Classes\CommandBoard.cs" />
+    <Compile Include="Commands\Classes\End.cs" />
+    <Compile Include="Commands\Classes\Info.cs" />
+    <Compile Include="Commands\Classes\Start.cs" />
+    <Compile Include="Commands\Classes\Turn.cs" />
+    <Compile Include="Commands\DataCommand.cs" />
+    <Compile Include="Commands\ECommand.cs" />
+    <Compile Include="Board.cs" />
+    <Compile Include="AI\IAI.cs" />
+    <Compile Include="AI\IterativeDeepening.cs" />
+    <Compile Include="Core.cs" />
+    <Compile Include="Evaluator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AI\Random.cs" />
+    <Compile Include="Serializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
