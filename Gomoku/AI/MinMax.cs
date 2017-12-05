@@ -9,7 +9,7 @@ namespace Gomoku {
     public class MinMax
         : IAI {
         private Board Map = null;
-        private uint MaxDepth = 2;
+        private uint MaxDepth = 1;
         public bool Finished = false;
         private uint Offset = 0;
 
