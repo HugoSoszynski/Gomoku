@@ -93,6 +93,10 @@ namespace Gomoku {
             foreach (var move in moves) {
                 Map.Play(move.Item1, move.Item2, State.Myself);
                 currentScore = MinimiseMove(depth, double.MinValue, double.MaxValue, move);
+                if (currentScore == double.MaxValue) {
+                    Map.Unplay(move.Item1, move.Item2);
+                    return move;
+                }
                 if (best == null || bestScore < currentScore) {
                     best = move;
                     bestScore = currentScore;
@@ -118,8 +122,10 @@ namespace Gomoku {
             foreach (var move in moves) {
                 Map.Play(move.Item1, move.Item2, State.Opponent);
                 double score = MaximiseMove(depth - 1, alpha, beta, move);
-                if (score == double.MaxValue)
+                if (score == double.MaxValue) {
+                    Map.Unplay(move.Item1, move.Item2);
                     return score;
+                }
                 Map.Unplay(move.Item1, move.Item2);
                 res = Math.Min(res, score);
                 beta = Math.Min(beta, score);
@@ -143,8 +149,10 @@ namespace Gomoku {
             foreach (var move in moves) {
                 Map.Play(move.Item1, move.Item2, State.Myself);
                 double score = MinimiseMove(depth - 1, alpha, beta, move);
-                if (score == double.MaxValue)
+                if (score == double.MaxValue) {
+                    Map.Unplay(move.Item1, move.Item2);
                     return score;
+                }
                 Map.Unplay(move.Item1, move.Item2);
                 res = Math.Max(res, score);
                 alpha = Math.Max(alpha, score);
