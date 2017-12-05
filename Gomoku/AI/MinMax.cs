@@ -43,7 +43,7 @@ namespace Gomoku {
             if (off > 0)
                 --off;
             for (eoff = board.Size - 1; eoff >= 0; --eoff) {
-                if (CheckBorderDown(board, eoff))
+                if (CheckBorderDown(board, eoff, off))
                     break;
             }
             if (eoff < board.Size - 1)
@@ -68,13 +68,16 @@ namespace Gomoku {
             return false;
         }
 
-        private bool CheckBorderDown(Board board, uint offset) {
-            for (var x = offset; x > 0; --x) {
-                if (board.Map[x, offset] != State.Empty)
+        private bool CheckBorderDown(Board board, uint eoffset, uint offset)
+        {
+            if (eoffset == offset)
+                return true;
+            for (var x = eoffset; x > offset; --x) {
+                if (board.Map[x, eoffset] != State.Empty)
                     return true;
             }
-            for (var y = offset; y > 0; --y) {
-                if (board.Map[offset, y] != State.Empty)
+            for (var y = eoffset; y > offset; --y) {
+                if (board.Map[eoffset, y] != State.Empty)
                     return true;
             }
             return false;
