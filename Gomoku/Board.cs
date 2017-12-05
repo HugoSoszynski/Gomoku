@@ -54,7 +54,7 @@ namespace Gomoku
             }
         }
 
-        private void Zero() {
+        public void Zero() {
             for (var x = 0; x < Size; ++x) {
                 for (var y = 0; y < Size; ++y) {
                     Map[x, y] = State.Empty;
@@ -86,6 +86,14 @@ namespace Gomoku
                 }
             }
             return moves;
+        }
+
+        public bool Empty() {
+            foreach (var c in Map) {
+                if (c != State.Empty)
+                    return false;
+            }
+            return true;
         }
     }
 }

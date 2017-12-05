@@ -9,23 +9,76 @@ namespace Gomoku {
     public class MinMax
         : IAI {
         private Board Map = null;
-        private uint MaxDepth = 5;
-        public bool finished = false;
+        private uint MaxDepth = 2;
+        public bool Finished = false;
+        private uint Offset = 0;
 
         public Tuple<uint, uint> MakeMove(Board board) {
-            Map = new Board(board);
+            if (board.Empty())
+                return new Tuple<uint, uint>(board.Size / 2, board.Size / 2);
+            InitBoard(board);
             var res = DecideMove();
+            res = new Tuple<uint, uint>(res.Item1 + Offset, res.Item2 + Offset);
             Map = null;
+            Offset = 0;
+            Finished = false;
             return res;
         }
 
         public Tuple<uint, uint> MakeMove(Board board, uint depth) {
-            Map = new Board(board);
             MaxDepth = depth;
-            var res = DecideMove();
-            Map = null;
-            MaxDepth = 5;
+            var res = MakeMove(board);
+            MaxDepth = 2;
             return res;
+        }
+
+        private void InitBoard(Board board) {
+            uint off;
+            uint eoff = 0;
+
+            for (off = 0; off < board.Size; ++off) {
+                if (CheckBorderUp(board, off))
+                    break;
+            }
+            if (off > 0)
+                --off;
+            for (eoff = board.Size - 1; eoff >= 0; --eoff) {
+                if (CheckBorderDown(board, eoff))
+                    break;
+            }
+            if (eoff < board.Size - 1)
+                ++eoff;
+            Offset = off;
+            Map = new Board(eoff - off + 1);
+            for (var x = off; x <= eoff; ++x) {
+                for (var y = off; y <= eoff; ++y) {
+                    Map.Map[x - off, y - off] = board.Map[x, y];
+                }
+            }
+        }
+
+        private bool CheckBorderUp(Board board, uint offset) {
+            for (var x = offset; x < board.Size; ++x) {
+                if (board.Map[x, offset] != State.Empty)
+                    return true;
+            }
+            for (var y = offset; y < board.Size; ++y) {
+                if (board.Map[offset, y] != State.Empty)
+                    return true;
+            }
+            return false;
+        }
+
+        private bool CheckBorderDown(Board board, uint offset) {
+            for (var x = offset; x > 0; --x) {
+                if (board.Map[x, offset] != State.Empty)
+                    return true;
+            }
+            for (var y = offset; y > 0; --y) {
+                if (board.Map[offset, y] != State.Empty)
+                    return true;
+            }
+            return false;
         }
 
         private Tuple<uint, uint> DecideMove() {
@@ -45,7 +98,7 @@ namespace Gomoku {
                     bestScore = currentScore;
                 }
                 Map.Unplay(move.Item1, move.Item2);
-                if (finished)
+                if (Finished)
                     break;
             }
             return best;
