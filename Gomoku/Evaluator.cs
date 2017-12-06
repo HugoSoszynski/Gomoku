@@ -9,6 +9,7 @@ namespace Gomoku
         public uint Four;
         public uint Three;
         public uint Two;
+        public uint One;
     }
     
     public class Evaluator
@@ -20,8 +21,8 @@ namespace Gomoku
                 return Double.MaxValue;
             if (scores.Item2.Five)
                 return Double.MinValue;
-            double opponentScore = scores.Item2.Four * 80 + scores.Item2.Three * 3 + scores.Item2.Two * 0;
-            double myselfScore = scores.Item1.Four * 100 + scores.Item1.Three * 5 + scores.Item1.Two * 1;
+            double opponentScore = scores.Item2.Four * 100 + scores.Item2.Three * 5 + scores.Item2.Two * 1 + scores.Item2.One * 1;
+            double myselfScore = scores.Item1.Four * 100 + scores.Item1.Three * 5 + scores.Item1.Two * 2;
             double tmp = myselfScore - opponentScore;
             return tmp;
         }
@@ -29,8 +30,8 @@ namespace Gomoku
         // Tuple Item1 is score of myself, Item2 is score of opponent
         private Tuple<Score, Score> WinChains(Board board)
         {
-            Score opponentScore = new Score{Five = false, Four = 0, Three = 0, Two = 0};
-            Score myselfScore = new Score{Five = false, Four = 0, Three = 0, Two = 0};
+            Score opponentScore = new Score{Five = false, Four = 0, Three = 0, Two = 0, One =  0};
+            Score myselfScore = new Score{Five = false, Four = 0, Three = 0, Two = 0, One = 0};
             
             for (int x = 0; x < board.Size; x++)
             {
@@ -67,6 +68,9 @@ namespace Gomoku
                     break;
                 case 2:
                     ++score.Two;
+                    break;
+                case 1:
+                    ++score.One;
                     break;
             }
             return score;
