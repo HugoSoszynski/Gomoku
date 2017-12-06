@@ -12,6 +12,7 @@ namespace Gomoku {
         private uint MaxDepth = 1;
         public bool Finished = false;
         private uint Offset = 0;
+        private List<Tuple<uint, uint>> PossibleMoves = null;
 
         public Tuple<uint, uint> MakeMove(Board board) {
             if (board.Empty())
@@ -86,16 +87,20 @@ namespace Gomoku {
         private Tuple<uint, uint> DecideMove() {
             Tuple<uint, uint> best = null;
             double bestScore = double.MinValue;
-            var moves = Map.PossibleMoves();
+            PossibleMoves = Map.PossibleMoves();
             double currentScore = 0;
             var depth = MaxDepth;
 
-            if (moves.Count() == 1)
-                return moves.ElementAt(0);
+            if (PossibleMoves.Count() == 1)
+                return PossibleMoves.ElementAt(0);
+            RemoveUselessMoves();
+            var moves = new List<Tuple<uint, uint>>(PossibleMoves);
             foreach (var move in moves) {
                 Map.Play(move.Item1, move.Item2, State.Myself);
+                PossibleMoves.Remove(move);
                 currentScore = MinimiseMove(depth, double.MinValue, double.MaxValue, move);
                 if (currentScore == double.MaxValue) {
+                    PossibleMoves.Add(move);
                     Map.Unplay(move.Item1, move.Item2);
                     return move;
                 }
@@ -103,12 +108,43 @@ namespace Gomoku {
                     best = move;
                     bestScore = currentScore;
                 }
+                PossibleMoves.Add(move);
                 Map.Unplay(move.Item1, move.Item2);
                 if (Finished)
                     break;
             }
             return best;
-        } 
+        }
+
+        private void RemoveUselessMoves() {
+            var moves = new List<Tuple<uint, uint>>();
+
+            foreach (var move in PossibleMoves) {
+                if (CheckAround(move))
+                    moves.Add(move);
+            }
+            PossibleMoves = moves;
+        }
+
+        private bool CheckAround(Tuple<uint, uint> move) {
+            for (var x = -2; x < 3; ++x) {
+                if (x < 0 && Math.Abs(x) > move.Item1)
+                    continue;
+                if (move.Item1 + x >= Map.Size)
+                    continue;
+                for (var y = -2; y < 3; ++y) {
+                    if (y < 0 && Math.Abs(y) > move.Item2)
+                        continue;
+                    if (move.Item2 + y >= Map.Size)
+                        continue;
+                    if (x == 0 && y == 0)
+                        continue;
+                    if (Map.Map[move.Item1 + x, move.Item2 + y] != State.Empty)
+                        return true;
+                }
+            }
+            return false;
+        }
 
         private double MinimiseMove(uint depth, double alpha, double beta, Tuple<uint, uint> madeMove) {
             double res;
@@ -120,14 +156,17 @@ namespace Gomoku {
             }
 
             res = double.MaxValue;
-            var moves = Map.PossibleMoves();
+            var moves = new List<Tuple<uint, uint>>(PossibleMoves);
             foreach (var move in moves) {
+                PossibleMoves.Remove(move);
                 Map.Play(move.Item1, move.Item2, State.Opponent);
                 double score = MaximiseMove(depth - 1, alpha, beta, move);
                 if (score == double.MaxValue) {
+                    PossibleMoves.Add(move);
                     Map.Unplay(move.Item1, move.Item2);
                     return score;
                 }
+                PossibleMoves.Add(move);
                 Map.Unplay(move.Item1, move.Item2);
                 res = Math.Min(res, score);
                 beta = Math.Min(beta, score);
@@ -147,14 +186,17 @@ namespace Gomoku {
             }
 
             res = double.MinValue;
-            var moves = Map.PossibleMoves();
+            var moves = new List<Tuple<uint, uint>>(PossibleMoves);
             foreach (var move in moves) {
+                PossibleMoves.Remove(move);
                 Map.Play(move.Item1, move.Item2, State.Myself);
                 double score = MinimiseMove(depth - 1, alpha, beta, move);
                 if (score == double.MaxValue) {
+                    PossibleMoves.Add(move);
                     Map.Unplay(move.Item1, move.Item2);
                     return score;
                 }
+                PossibleMoves.Add(move);
                 Map.Unplay(move.Item1, move.Item2);
                 res = Math.Max(res, score);
                 alpha = Math.Max(alpha, score);
