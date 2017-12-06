@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Gomoku
 {
@@ -50,9 +51,9 @@ namespace Gomoku
             return new Tuple<Score, Score>(myselfScore, opponentScore);
         }
 
-        private Score FulfillScore(State[] array, ref Score score, State player)
+        private Score FulfillScore(List<State> list, ref Score score, State player)
         {
-            var tmp = LongestChain(array, player);
+            var tmp = LongestChain(list, player);
             switch (tmp)
             {
                 case 5:
@@ -71,68 +72,60 @@ namespace Gomoku
             return score;
         }
 
-        private State[] NewRowStates(Board board, int x, int y)
+        private List<State> NewRowStates(Board board, int x, int y)
         {
-            if (y + 4 >= board.Size) 
-                return null;
-            return new []
+            var list = new List<State>();
+            for (int i = 0; i < 5; i++)
             {
-                board.Map[x, y],
-                board.Map[x, y + 1],
-                board.Map[x, y + 2],
-                board.Map[x, y + 3],
-                board.Map[x, y + 4]
-            };
+                if (y + i >= board.Size)
+                    break;
+                list.Add(board.Map[x, y + i]);
+            }
+            return list;
         }
         
-        private State[] NewColStates(Board board, int x, int y)
+        private List<State> NewColStates(Board board, int x, int y)
         {
-            if (x + 4 >= board.Size) 
-                return null;
-            return new []
+            var list = new List<State>();
+            for (int i = 0; i < 5; i++)
             {
-                board.Map[x, y],
-                board.Map[x + 1, y],
-                board.Map[x + 2, y],
-                board.Map[x + 3, y],
-                board.Map[x + 4, y]
-            };
+                if (x + i >= board.Size)
+                    break;
+                list.Add(board.Map[x + i, y]);
+            }
+            return list;
         }
 
-        private State[] NewDiagRightStates(Board board, int x, int y)
+        private List<State> NewDiagRightStates(Board board, int x, int y)
         {
-            if (y + 4 >= board.Size || x + 4 >= board.Size) 
-                return null;
-            return new []
+            var list = new List<State>();
+            for (int i = 0; i < 5; i++)
             {
-                board.Map[x, y],
-                board.Map[x + 1, y + 1],
-                board.Map[x + 2, y + 2],
-                board.Map[x + 3, y + 3],
-                board.Map[x + 4, y + 4]
-            };
+                if (x + i >= board.Size || y + i >= board.Size)
+                    break;
+                list.Add(board.Map[x + i, y + i]);
+            }
+            return list;
         }
 
-        private State[] NewDiagLeftStates(Board board, int x, int y)
+        private List<State> NewDiagLeftStates(Board board, int x, int y)
         {
-            if (y - 4 < 0 || x + 4 >= board.Size) 
-                return null;
-            return new []
+            var list = new List<State>();
+            for (int i = 0; i < 5; i++)
             {
-                board.Map[x, y],
-                board.Map[x + 1, y - 1],
-                board.Map[x + 2, y - 2],
-                board.Map[x + 3, y - 3],
-                board.Map[x + 4, y - 4]
-            };
+                if (x + i >= board.Size || y - i < 0)
+                    break;
+                list.Add(board.Map[x + i, y - i]);
+            }
+            return list;
         }
 
-        private int LongestChain(State[] array, State player)
+        private int LongestChain(List<State> list, State player)
         {
-            if (array == null)
+            if (list == null)
                 return 0;
             int count = 0;
-            foreach (var tmp in array)
+            foreach (var tmp in list)
             {
                 if (tmp == State.Empty)
                     continue;
