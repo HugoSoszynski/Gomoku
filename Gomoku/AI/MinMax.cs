@@ -10,7 +10,6 @@ namespace Gomoku {
         : IAI {
         private Board Map = null;
         private uint MaxDepth = 1;
-        public bool Finished = false;
         private uint Offset = 0;
         private List<Tuple<uint, uint>> PossibleMoves = null;
 
@@ -22,7 +21,6 @@ namespace Gomoku {
             res = new Tuple<uint, uint>(res.Item1 + Offset, res.Item2 + Offset);
             Map = null;
             Offset = 0;
-            Finished = false;
             return res;
         }
 
@@ -73,13 +71,17 @@ namespace Gomoku {
         {
             if (eoffset == offset)
                 return true;
-            for (var x = eoffset; x > offset; --x) {
+            for (var x = eoffset; x >= offset; --x) {
                 if (board.Map[x, eoffset] != State.Empty)
                     return true;
+                if (x == 0)
+                    break;
             }
-            for (var y = eoffset; y > offset; --y) {
+            for (var y = eoffset; y >= offset; --y) {
                 if (board.Map[eoffset, y] != State.Empty)
                     return true;
+                if (y == 0)
+                    break;
             }
             return false;
         }
@@ -110,8 +112,6 @@ namespace Gomoku {
                 }
                 PossibleMoves.Add(move);
                 Map.Unplay(move.Item1, move.Item2);
-                if (Finished)
-                    break;
             }
             return best;
         }
