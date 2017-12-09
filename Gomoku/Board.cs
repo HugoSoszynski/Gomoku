@@ -29,16 +29,22 @@ namespace Gomoku
     public class Board {
 
         public uint Size { get; private set; }
+        public uint MaxSize { get; private set; }
+        public uint Offset { get; private set; }
         public State[,] Map = null;
 
-        public Board(uint size) {
+        public Board(uint size, uint maxSize, uint offset = 0) {
             Size = size;
+            MaxSize = maxSize;
+            Offset = offset;
             Map = new State[size, size];
             this.Zero();
         }
 
         public Board(Board other) {
             this.Size = other.Size;
+            this.MaxSize = other.MaxSize;
+            this.Offset = other.Offset;
             this.Map = new State[Size, Size];
             for (var x = 0; x < Size; ++x) {
                 for (var y = 0; y < Size; ++y) {
