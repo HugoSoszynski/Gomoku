@@ -37,8 +37,6 @@ namespace Gomoku
             {
                 for (int y = 0; y < board.Size; y++)
                 {
-                    if (AroundEmpty(board, x, y))
-                        continue;
                     FulfillScore(NewColStates(board, x, y), ref myselfScore, State.Myself);
                     FulfillScore(NewRowStates(board, x, y), ref myselfScore, State.Myself);
                     FulfillScore(NewDiagRightStates(board, x, y), ref myselfScore, State.Myself);
@@ -52,27 +50,6 @@ namespace Gomoku
                 }
             }
             return new Tuple<Score, Score>(myselfScore, opponentScore);
-        }
-
-        private bool AroundEmpty(Board board, int x, int y)
-        {
-            if (x + 1 < board.Size && board.Map[x + 1, y] != State.Empty)
-                return false;
-            if (x + 1 < board.Size && y - 1 > 0 && board.Map[x + 1, y - 1] != State.Empty)
-                return false;
-            if (x + 1 < board.Size && y + 1 < board.Size && board.Map[x + 1, y + 1] != State.Empty)
-                return false;
-            if (x - 1 > 0 && board.Map[x - 1, y] != State.Empty)
-                return false;
-            if (x - 1 > 0 && y - 1 > 0 && board.Map[x - 1, y - 1] != State.Empty)
-                return false;
-            if (x - 1 > 0 && y + 1 < board.Size && board.Map[x - 1, y + 1] != State.Empty)
-                return false;
-            if (y - 1 > 0 &&  y - 1 > 0 && board.Map[x, y - 1] != State.Empty)
-                return false;
-            if (y - 1 > 0 && y + 1 < board.Size && board.Map[x, y + 1] != State.Empty)
-                return false;
-            return true;
         }
 
         private Score FulfillScore(List<State> list, ref Score score, State player)
