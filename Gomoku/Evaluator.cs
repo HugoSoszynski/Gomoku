@@ -78,8 +78,6 @@ namespace Gomoku
 
         private List<State> NewRowStates(Board board, int x, int y)
         {
-            if (y + board.Offset + 4 >= board.MaxSize)
-                return null;
             var list = new List<State>();
             for (int i = 0; i < 5; i++)
             {
@@ -92,8 +90,6 @@ namespace Gomoku
         
         private List<State> NewColStates(Board board, int x, int y)
         {
-            if (x + board.Offset + 4 >= board.MaxSize)
-                return null;
             var list = new List<State>();
             for (int i = 0; i < 5; i++)
             {
@@ -106,9 +102,6 @@ namespace Gomoku
 
         private List<State> NewDiagRightStates(Board board, int x, int y)
         {
-            if (x + board.Offset + 4 >= board.MaxSize ||
-                y + board.Offset + 4 >= board.MaxSize)
-                return null;
             var list = new List<State>();
             for (int i = 0; i < 5; i++)
             {
@@ -121,9 +114,6 @@ namespace Gomoku
 
         private List<State> NewDiagLeftStates(Board board, int x, int y)
         {
-            if (x + board.Offset + 4 >= board.MaxSize ||
-                y + board.Offset - 4 < 0)
-                return null;
             var list = new List<State>();
             for (int i = 0; i < 5; i++)
             {
