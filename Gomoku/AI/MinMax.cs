@@ -50,7 +50,7 @@ namespace Gomoku {
             if (eoff < board.Size - 1)
                 ++eoff;
             Offset = off;
-            Map = new Board(eoff - off + 1, board.MaxSize, off);
+            Map = new Board(eoff - off + 1);
 
             for (int i = 0; i < Map.Size; i++)
                 for (int j = 0; j < Map.Size; j++)

@@ -38,7 +38,7 @@ namespace Gomoku {
         }
 
         public static void Start(Object _object) {
-            _board = new Board((uint)_object, (uint)_object);
+            _board = new Board((uint)_object);
             _serializer.Send("OK");
         }
 
