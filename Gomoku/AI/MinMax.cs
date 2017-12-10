@@ -13,23 +13,25 @@ namespace Gomoku {
         public bool Finished = false;
         private uint Offset = 0;
         private List<Tuple<uint, uint>> PossibleMoves = null;
+        private Tuple<uint, uint> best = null;
 
         public Tuple<uint, uint> MakeMove(Board board) {
             if (board.Empty())
                 return new Tuple<uint, uint>(board.Size / 2, board.Size / 2);
             InitBoard(board);
-            var res = DecideMove();
-            res = new Tuple<uint, uint>(res.Item1 + Offset, res.Item2 + Offset);
+            var begin = DateTime.Now;
+            var t = new Thread(new ThreadStart(this.DecideMove));
+            t.Start();
+            while ((DateTime.Now - begin).TotalMilliseconds < 4700 && !Finished)
+                Thread.Sleep(100);
+            if (!Finished)
+                t.Abort();
+            var res = new Tuple<uint, uint>(best.Item1 + Offset, best.Item2 + Offset);
             Map = null;
             Offset = 0;
             Finished = false;
-            return res;
-        }
-
-        public Tuple<uint, uint> MakeMove(Board board, uint depth) {
-            MaxDepth = depth;
-            var res = MakeMove(board);
-            MaxDepth = 2;
+            best = null;
+            PossibleMoves = null;
             return res;
         }
 
@@ -84,15 +86,17 @@ namespace Gomoku {
             return false;
         }
 
-        private Tuple<uint, uint> DecideMove() {
-            Tuple<uint, uint> best = null;
+        private void DecideMove() {
             double bestScore = double.MinValue;
             PossibleMoves = Map.PossibleMoves();
             double currentScore = 0;
             var depth = MaxDepth;
 
-            if (PossibleMoves.Count() == 1)
-                return PossibleMoves.ElementAt(0);
+            if (PossibleMoves.Count() == 1) {
+                best =  PossibleMoves.ElementAt(0);
+                Finished = true;
+                return;
+            }
             RemoveUselessMoves();
             var moves = new List<Tuple<uint, uint>>(PossibleMoves);
             foreach (var move in moves) {
@@ -102,7 +106,9 @@ namespace Gomoku {
                 if (currentScore == double.MaxValue) {
                     PossibleMoves.Add(move);
                     Map.Unplay(move.Item1, move.Item2);
-                    return move;
+                    best = move;
+                    Finished = true;
+                    return;
                 }
                 if (best == null || bestScore < currentScore) {
                     best = move;
@@ -110,10 +116,8 @@ namespace Gomoku {
                 }
                 PossibleMoves.Add(move);
                 Map.Unplay(move.Item1, move.Item2);
-                if (Finished)
-                    break;
             }
-            return best;
+            Finished = true;
         }
 
         private void RemoveUselessMoves() {
